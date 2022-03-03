@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react'; 
+import html2canvas from 'html2canvas';
 
 function App() {
   const [linea1, setLinea1] = useState('');
@@ -16,7 +17,16 @@ function App() {
   const onChangeImagen = function (evento) {
     setImagen(evento.target.value)
   }
-
+  
+  const onclickExportar = function (evento) {
+    html2canvas (document.querySelector("#meme")).then(canvas => {
+       var img = canvas.toDataURL("image/png");
+       var link = document.createElement('a');
+       link.download = 'meme.png';
+       link.href = img;
+       link.click();
+     });
+   }
 
   return (
     <div className="App">
@@ -30,8 +40,8 @@ function App() {
       </select><br/>
       <input onChange= {onChangeLinea1} type="text" placeholder='linea 1'/><br/>
       <input onChange = {onChangeLinea2} type="text"placeholder='linea 2'/><br/>
-      <button>Exportar</button>
-    <div>
+      <button onClick={onclickExportar}>Exportar</button>
+    <div className="meme" id="meme">
       <span>{linea1}</span>
       <span>{linea2}</span>
       <img src ={"/img/"+imagen+".jpg"}/>
